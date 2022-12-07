@@ -1504,8 +1504,10 @@ class FuzzyDelaySimulationWrapper(
                     query_kwargs["al_kwargs"] = al_kwargs
                 else:
                     query_kwargs.update(al_kwargs)
+                new_kwargs = dict(kwargs)
+                new_kwargs.update(query_kwargs)
                 tmp_queried_indices, tmp_utilities = call_func(
-                    self.base_query_strategy_.query, **query_kwargs
+                    self.base_query_strategy_.query, **new_kwargs
                 )
                 if len(tmp_queried_indices):
                     queried_indices.append(i)
@@ -1525,6 +1527,9 @@ class FuzzyDelaySimulationWrapper(
                     "return_utilities": True,
                     "fit_clf": True,
                 }
+
+                new_kwargs = dict(kwargs)
+                new_kwargs.update(query_kwargs)
                 base_query_strategy_is_delay_wrapper = isinstance(
                     self.base_query_strategy_,
                     SingleAnnotStreamBasedQueryStrategyDelayWrapper,
@@ -1534,7 +1539,7 @@ class FuzzyDelaySimulationWrapper(
                 else:
                     query_kwargs.update(al_kwargs)
                 tmp_queried_indices, tmp_utilities = call_func(
-                    self.base_query_strategy_.query, **query_kwargs
+                    self.base_query_strategy_.query, **new_kwargs
                 )
                 if len(tmp_queried_indices):
                     queried_indices.append(i)
